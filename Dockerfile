@@ -1,9 +1,13 @@
 ARG SAGE_VERSION=9.0
 ARG SAGE_PYTHON_VERSION=3.7
-ARG BASE_CONTAINER=jupyter/minimal-notebook
+# jupyter/minimal-notebook
+ARG BASE_CONTAINER=rubydata/datascience-notebook
 FROM $BASE_CONTAINER
 
 USER root
+
+RUN pip install tqdm plotly line_profiler
+RUN pip install jupyter jupyterhub
 
 # Sage pre-requisites and jq for manipulating json
 RUN apt-get update && \
@@ -63,3 +67,19 @@ RUN echo ' \
     ' | conda run -n sage sh && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
+
+ARG NB_USER=jovyan
+ARG NB_UID=1000
+ENV USER ${NB_USER}
+ENV NB_UID ${NB_UID}
+ENV HOME /home/${NB_USER}
+
+# RUN adduser --disabled-password \
+#    --gecos "Default user" \
+#    --uid ${NB_UID} \
+#    ${NB_USER}
+
+COPY . ${HOME}
+USER root
+RUN chown -R ${NB_UID} ${HOME}
+USER ${NB_USER}
