@@ -28,7 +28,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 
-USER $NB_UID
+# USER $NB_UID
 
 # Initialize conda for shell interaction
 RUN conda init bash
