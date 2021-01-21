@@ -3,11 +3,6 @@ ARG SAGE_PYTHON_VERSION=3.7
 # jupyter/minimal-notebook
 ARG BASE_CONTAINER=rubydata/datascience-notebook
 
-ARG NB_USER=jovyan
-ARG NB_UID=1000
-ENV USER ${NB_USER}
-ENV NB_UID ${NB_UID}
-ENV HOME /home/${NB_USER}
 
 FROM $BASE_CONTAINER
 
@@ -81,6 +76,12 @@ RUN echo ' \
 #    --gecos "Default user" \
 #    --uid ${NB_UID} \
 #    ${NB_USER}
+
+ARG NB_USER=jovyan
+ARG NB_UID=1000
+ENV USER ${NB_USER}
+ENV NB_UID ${NB_UID}
+ENV HOME /home/${NB_USER}
 
 COPY . ${HOME}
 USER root
