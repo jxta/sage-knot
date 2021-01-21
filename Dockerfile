@@ -2,6 +2,13 @@ ARG SAGE_VERSION=9.0
 ARG SAGE_PYTHON_VERSION=3.7
 # jupyter/minimal-notebook
 ARG BASE_CONTAINER=rubydata/datascience-notebook
+
+ARG NB_USER=jovyan
+ARG NB_UID=1000
+ENV USER ${NB_USER}
+ENV NB_UID ${NB_UID}
+ENV HOME /home/${NB_USER}
+
 FROM $BASE_CONTAINER
 
 USER root
@@ -68,11 +75,7 @@ RUN echo ' \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
-ARG NB_USER=jovyan
-ARG NB_UID=1000
-ENV USER ${NB_USER}
-ENV NB_UID ${NB_UID}
-ENV HOME /home/${NB_USER}
+
 
 # RUN adduser --disabled-password \
 #    --gecos "Default user" \
